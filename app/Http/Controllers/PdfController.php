@@ -15,7 +15,12 @@ class PdfController extends Controller
             ], 400);
         }
         $filename = md5($request->input('url').time());
-        Browsershot::url($request->input('url'))->save(sprintf('/tmp/%s.pdf', $filename));
+        Browsershot::url($request->input('url'))
+            ->addChromiumArguments([
+                'no-sandbox', 
+                'disable-setuid-sandbox'
+            ])
+            ->save(sprintf('/tmp/%s.pdf', $filename));
         $blob = file_get_contents(sprintf('/tmp/%s.pdf', $filename));
         unlink(sprintf('/tmp/%s.pdf', $filename));
         return response()->make($blob, 200, [
@@ -32,7 +37,12 @@ class PdfController extends Controller
             ], 400);
         }
         $filename = md5('dom'.md5(time()).time());
-        Browsershot::html($request->input('dom'))->save(sprintf('/tmp/%s.pdf', $filename));
+        Browsershot::html($request->input('dom'))
+            ->addChromiumArguments([
+                'no-sandbox', 
+                'disable-setuid-sandbox'
+            ])
+            ->save(sprintf('/tmp/%s.pdf', $filename));
         $blob = file_get_contents(sprintf('/tmp/%s.pdf', $filename));
         unlink(sprintf('/tmp/%s.pdf', $filename));
         return response()->make($blob, 200, [
