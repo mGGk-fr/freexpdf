@@ -6,9 +6,9 @@ LABEL org.opencontainers.image.authors="mggk@protonmail.ch"
 RUN apt-get update && apt-get upgrade -y
 
 ## Install dependencies
-RUN apt-get install git curl && \
-    libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 && \
-    libgbm1 libpango-1.0-0 libcairo2 -y
+RUN DEBIAN_FRONTEND=noninteractive apt-get install git curl \
+    libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 \
+    libgbm1 libpango-1.0-0 libcairo2 libasound2 -y
 
 ## Install PHP8
 RUN DEBIAN_FRONTEND=noninteractive apt-get install software-properties-common -y
@@ -39,6 +39,8 @@ RUN cd /var/www && \
 COPY .env /var/www/freexpdf/.env
 RUN cd /var/www/freexpdf && \
     composer install
+
+RUN chmod -R 777 /var/www/freexpdf/storage
 
 EXPOSE 80
 CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]

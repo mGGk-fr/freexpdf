@@ -16,10 +16,9 @@ class PdfController extends Controller
         }
         $filename = md5($request->input('url').time());
         Browsershot::url($request->input('url'))
-            ->addChromiumArguments([
-                'no-sandbox', 
-                'disable-setuid-sandbox'
-            ])
+            ->noSandbox()
+            ->margins(0,0,0,0)
+            ->format('A4')
             ->save(sprintf('/tmp/%s.pdf', $filename));
         $blob = file_get_contents(sprintf('/tmp/%s.pdf', $filename));
         unlink(sprintf('/tmp/%s.pdf', $filename));
@@ -38,10 +37,9 @@ class PdfController extends Controller
         }
         $filename = md5('dom'.md5(time()).time());
         Browsershot::html($request->input('dom'))
-            ->addChromiumArguments([
-                'no-sandbox', 
-                'disable-setuid-sandbox'
-            ])
+            ->noSandbox()
+            ->format('A4')
+            ->margins(0,0,0,0)
             ->save(sprintf('/tmp/%s.pdf', $filename));
         $blob = file_get_contents(sprintf('/tmp/%s.pdf', $filename));
         unlink(sprintf('/tmp/%s.pdf', $filename));
