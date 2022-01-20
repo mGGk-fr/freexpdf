@@ -14,7 +14,7 @@
 */
 
 $router->get('/', function () use ($router) {
-    return 'Welcome to FreeXPdf API';
+    return 'Welcome to FreeXPdf API<br />Source code : <a href="https://github.com/mGGk-fr/freexpdf">mGGk-fr/freexpdf</a>';
 });
 
 $router->group(['prefix' => 'api'], function () use ($router) {
